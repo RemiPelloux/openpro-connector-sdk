@@ -1,0 +1,26 @@
+{
+    "name": "openpro/connector-sdk",
+    "description": "OpenPro Connector SDK — build integrations that sync jobs and candidates into OpenPro.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "psr/http-client": "^1.0",
+        "psr/log": "^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenPro\\ConnectorSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "OpenPro\\ConnectorSdk\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
