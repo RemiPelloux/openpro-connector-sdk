@@ -1,0 +1,52 @@
+---
+description: OpenProtocol — the mandatory 8-step workflow for every Connector SDK task
+alwaysApply: true
+---
+
+# OpenProtocol — Connector SDK (PHP 8.2 library)
+
+The non-negotiable loop for **every** task in `openprosdk`. Run all eight steps
+in order; never claim done before step 8. Apply judgment for trivial one-liners.
+
+**Before anything:** `git fetch && git pull` on `main`.
+
+## 1. Locate
+
+- Find where the code belongs under `src/` (`OpenPro\ConnectorSdk\` PSR-4). This is a public library — design the surface deliberately.
+- Read neighboring classes and match existing patterns. Name the files you will touch.
+
+## 2. Apply Pelloux guidelines
+
+- Think first, simplest solution, surgical changes — every changed line traces to the request.
+- Strict typing + return types on every method. Class/method focused (method ≤ 25 lines, ≤ 4 params).
+- Depend only on PSR interfaces (`psr/http-client`, `psr/log`). No magic numbers, no dead code, no `var_dump()`.
+
+## 3. Make
+
+- Minimum code that solves the request. Keep the public API minimal, explicit, and documented (this is consumed by external integrations).
+- Avoid breaking changes to existing public signatures unless explicitly requested.
+
+## 4. Write tests
+
+- Add/extend PHPUnit tests under `tests/` (PSR-4 `OpenPro\ConnectorSdk\Tests\`) — happy path **and** failure.
+- Bug fix → write the failing test first. Mock the PSR HTTP client; never hit a live endpoint.
+
+## 5. Check tests — are they good?
+
+- Assert real behavior (request shape sent to the HTTP client, parsed responses, thrown exceptions) — not internals.
+- No no-op or conditional assertions. Run `vendor/bin/phpunit` (or `vendor/bin/phpunit --filter=YourTest`).
+
+## 6. Review
+
+- Re-read the diff; remove `use` statements/vars your change orphaned.
+- `php -l <file>` syntax check. Full `vendor/bin/phpunit` green. Update `README.md`/`docs/` and `examples/` if the public API changed.
+
+## 7. Commit clearly
+
+- `<type>(<scope>): <subject ≤ 72 chars>` — e.g. `feat(client): add candidate sync endpoint`.
+- Types: `feat|fix|refactor|test|docs|chore|perf`. One logical change per commit. No `Co-authored-by`.
+
+## 8. Push
+
+- Work on `main`. **Push only when the user explicitly asks.**
+- Never force-push. Push only after the full PHPUnit suite passes.
