@@ -1,0 +1,45 @@
+---
+description: Definition of Done — mandatory before commit/push
+alwaysApply: true
+---
+
+# Definition of Done — openpro-connector-sdk
+
+**Not done until every applicable item passes.**
+
+## 1. Scope & quality
+
+- [ ] Every changed line traces to the request
+- [ ] Pelloux limits: file ≤400 lines, function ≤25 lines
+- [ ] No secrets, no `console.*`, no type escape hatches
+- [ ] Orphans from your diff removed
+
+## 2. Tests (mandatory for behavior changes)
+
+- [ ] Happy path + error path covered
+- [ ] Bug fix includes regression test
+- [ ] See `testing-standards.mdc`
+
+```bash
+
+```
+
+## 3. Static checks (pre-commit)
+
+```bash
+bash scripts/check-quality.sh
+pnpm exec tsc --noEmit 2>/dev/null 
+```
+
+## 4. Pre-push
+
+```bash
+pnpm exec tsc --noEmit 2>/dev/null 
+ npm run typecheck --if-present
+```
+
+
+
+## Done means
+
+Tests lock behavior, hooks pass, build succeeds — not "I think it works."

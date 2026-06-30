@@ -1,0 +1,25 @@
+---
+description: openpro-connector-sdk — project commands and OpenOS context
+alwaysApply: true
+---
+
+# openpro-connector-sdk
+
+Part of the **OpenOS** ecosystem. Parent: `OpenOS/README.md`.
+
+| Stack | ts |
+|-------|----------|
+
+## Commands
+
+| Step | Command |
+|------|---------|
+| Quality gate | `bash scripts/check-quality.sh` |
+| Type-check | `pnpm exec tsc --noEmit 2>/dev/null ` |
+| Test | `` |
+| Build | ` npm run typecheck --if-present` |
+| Enable hooks | `bash scripts/setup-hooks.sh` |
+
+## OpenOS integration
+
+When this app emits events or exposes MCP, follow `OpenOS/.cursor/rules/openos-integration.mdc`.

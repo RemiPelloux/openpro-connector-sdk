@@ -1,0 +1,38 @@
+---
+description: Git workflow and commit standards
+alwaysApply: true
+---
+
+# Git Workflow
+
+## Before work
+
+```bash
+git fetch && git pull
+```
+
+## Commit format
+
+```
+<type>(<scope>): <imperative subject ≤ 72 chars>
+
+Optional body: why, not what.
+```
+
+Types: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`, `ci`, `perf`
+
+## Rules
+
+- One logical change per commit
+- Never `--no-verify` except emergencies
+- Commit only when asked or completing an assigned deliverable
+- Push after checks pass (type-check, test, build)
+- This repo is part of OpenOS — see parent `OpenOS/README.md`
+
+## Hooks
+
+```bash
+bash scripts/setup-hooks.sh   # once after clone
+```
+
+Pre-commit and pre-push enforce quality — see `pre-commit-enforcement.mdc`.

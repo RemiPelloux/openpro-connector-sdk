@@ -1,0 +1,45 @@
+---
+description: Pelloux execution discipline — how to think and work
+alwaysApply: true
+---
+
+# Pelloux Guidelines — Execution Discipline
+
+Standards and git workflow: `strict-coding-rules.mdc`, `pre-commit-enforcement.mdc`, `git-workflow.mdc`.
+
+## 1. Think Before Coding
+
+- State assumptions explicitly. If uncertain, ask.
+- Surface multiple interpretations — don't pick silently.
+- Prefer simpler approaches; push back when warranted.
+
+## 2. Simplicity First
+
+- Minimum code that solves the problem. Nothing speculative.
+- No abstractions for single-use code.
+- 200 lines that could be 50? Rewrite.
+
+## 3. Surgical Changes
+
+- Touch only what you must. Match existing style.
+- Orphans from your change → remove them.
+- Every changed line traces to the request.
+
+## 4. Goal-Driven Execution
+
+```
+1. <step> → verify: <check>
+2. <step> → verify: <check>
+```
+
+## 5. Size Limits
+
+- File ≤ 300 lines (warn), ≤ 400 (hard, pre-commit blocks)
+- Function ≤ 25 lines
+- Parameters ≤ 3 — use options object beyond that
+
+## 6. Make / Test / Verify
+
+1. Make the feature
+2. Run tests + type-check from this project's `openos-project.mdc`
+3. Build must succeed before push

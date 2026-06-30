@@ -1,0 +1,38 @@
+---
+description: Pre-commit quality gate — enforced by scripts/check-quality.sh
+alwaysApply: true
+---
+
+# Pre-Commit Quality Gate
+
+Machine-enforced by `scripts/check-quality.sh` and `.husky/pre-commit`. Violations block commit.
+
+## Checks (staged files)
+
+1. No hardcoded `aria-label` / `placeholder` in JSX (use i18n `t()`)
+2. No `console.log|warn|error`
+3. No `as any`, `@ts-ignore`, `@ts-expect-error`
+4. File size: ≤300 ok, 301–400 warn, >400 block
+5. No raw axios imports (use apiClient)
+6. No language ternaries (`lang === 'fr' ? …`)
+7. No duplicate locale keys
+8. Long functions (>25 lines) → warning
+9. Python: same size/type rules on `.py` files
+
+**Exempt:** test files, locale files, logger utility, type defs.
+
+## Pipeline
+
+```
+1. scripts/check-quality.sh
+2. type-check (project command in openos-project.mdc)
+3. tests (project command in openos-project.mdc)
+```
+
+Pre-push: type-check + build (see `.husky/pre-push`).
+
+## Bypass
+
+`git commit --no-verify` only for emergencies. Follow with cleanup commit.
+
+Setup hooks once: `bash scripts/setup-hooks.sh`

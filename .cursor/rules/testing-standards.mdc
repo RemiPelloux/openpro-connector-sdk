@@ -1,0 +1,39 @@
+---
+description: Testing standards — real tests, minimal mocking
+alwaysApply: true
+---
+
+# Testing Standards
+
+**Valid tests, not overmocked.** Behavior changes require automated tests before done.
+
+## Rules
+
+### Do
+
+- Test happy path + at least one error/edge path
+- Bug fixes: regression test that fails on parent commit
+- Assert observable behavior — not implementation details
+- Use factories/fixtures — no copy-pasted IDs across tests
+- Run focused tests during dev; full suite before push
+
+### Do not
+
+- Mock the module under test for persistence logic
+- `expect(true).toBe(true)` no-op tests
+- Defer tests to "later sprint"
+- Skip CI with `.skip` without documented reason
+
+### Mocking allowed for
+
+- External APIs (LLM, OAuth, third-party HTTP)
+- Clock/time when testing scheduling
+- Not for your own DB/ORM when testing service persistence
+
+## Coverage target
+
+≥ 90% on **new/changed** code paths. Full-repo coverage is aspirational; changed behavior must be locked by tests.
+
+## Commands
+
+See project-specific commands in `openos-project.mdc`.

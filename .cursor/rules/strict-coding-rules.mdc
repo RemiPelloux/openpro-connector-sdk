@@ -1,0 +1,41 @@
+---
+description: Strict coding standards — enforced on every change
+alwaysApply: true
+---
+
+# Strict Coding Rules
+
+Mandatory for all code. Violations block commit via `scripts/check-quality.sh`.
+
+## TypeScript / JavaScript
+
+- `strict` mode — no `any`, no `@ts-ignore` without documented reason
+- Zod (or equivalent) validates every API boundary
+- Functions ≤ 25 lines; files ≤ 300 target / 400 hard max
+- Parameters ≤ 3 — options object when more
+- Imports at top of file — no inline imports
+- Every `catch` logs with context — no silent swallowing
+- No `console.*` in production code — use structured logger
+- No raw `fetch`/`axios` scattered in UI — use project API client
+
+## Python
+
+- Type hints on public functions; ruff clean
+- Pydantic models for API and message shapes
+- Modules ≤ 300 lines; no bare `print()` in app code
+- Async I/O for network calls
+
+## Security
+
+- Parameterized SQL only — never string interpolation
+- Secrets in env — never committed
+- Tenant/org scoping on every query where applicable
+- Agent tools: least privilege
+
+## Testing
+
+See `testing-standards.mdc` and `definition-of-done.mdc`. Tests are mandatory for behavior changes — not optional follow-up.
+
+## OpenOS integration
+
+When emitting events or exposing MCP: follow OpenOS integration contracts (event schema, audit envelope). See parent `OpenOS/.cursor/rules/openos-integration.mdc`.
