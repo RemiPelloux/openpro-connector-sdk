@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
+# ------------------------------------------------------------------
+# pre-push — openprosdk
+#
+# Runs TypeScript type-check before pushing.
+# ------------------------------------------------------------------
 ROOT="$(git rev-parse --show-toplevel)"
-cd "$ROOT/npm test --if-present" && pnpm exec tsc --noEmit 2>/dev/null  || exit 1
-cd "$ROOT/npm test --if-present" &&  npm run typecheck --if-present || exit 1
+cd "$ROOT" || exit 1
+
+pnpm exec tsc --noEmit || exit 1
