@@ -1,28 +1,28 @@
 #!/usr/bin/env sh
 # ------------------------------------------------------------------
-# pre-commit — openprosdk (optimized)
+# pre-commit — openprosdk (PHP connector library)
 #
-# Runs quality gate + TypeScript check in parallel.
+# Runs php -l on staged PHP files, then phpunit when PHP changed.
 # ------------------------------------------------------------------
 ROOT="$(git rev-parse --show-toplevel)"
 
-# Fast skip: if no TS/TSX/Py files staged, nothing to check
-STAGED=$(git diff --cached --name-only --diff-filter=ACMR -- '*.ts' '*.tsx' '*.py' 2>/dev/null || true)
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR -- '*.php' 2>/dev/null || true)
 if [ -z "$STAGED" ]; then
-  echo "✅ Pre-commit: no TS/TSX/Py files staged — skipping."
+  echo "✅ Pre-commit: no PHP files staged — skipping."
   exit 0
 fi
 
 FAIL=0
 
-bash "$ROOT/scripts/check-quality.sh" &
-PID_QUALITY=$!
+for file in $STAGED; do
+  php -l "$ROOT/$file" || FAIL=1
+done
 
-cd "$ROOT" && pnpm exec tsc --noEmit &
-PID_TSC=$!
+if [ "$FAIL" -ne 0 ]; then
+  echo "❌ Pre-commit: PHP syntax check failed."
+  exit 1
+fi
 
-wait $PID_QUALITY || FAIL=1
-wait $PID_TSC     || FAIL=1
+cd "$ROOT" && vendor/bin/phpunit || exit 1
 
-[ "$FAIL" -ne 0 ] && exit 1
 echo "✅ Pre-commit checks passed."
