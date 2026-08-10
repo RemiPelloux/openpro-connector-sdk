@@ -6,19 +6,22 @@
 # ------------------------------------------------------------------
 ROOT="$(git rev-parse --show-toplevel)"
 
-STAGED=$(git diff --cached --name-only --diff-filter=ACMR -- '*.php' 2>/dev/null || true)
-if [ -z "$STAGED" ]; then
+STAGED=$(mktemp)
+trap 'rm -f "$STAGED"' EXIT HUP INT TERM
+git diff --cached --name-only --diff-filter=ACMR -z -- '*.php' > "$STAGED"
+
+if [ ! -s "$STAGED" ]; then
   echo "✅ Pre-commit: no PHP files staged — skipping."
   exit 0
 fi
 
-FAIL=0
-
-for file in $STAGED; do
-  php -l "$ROOT/$file" || FAIL=1
-done
-
-if [ "$FAIL" -ne 0 ]; then
+if ! xargs -0 sh -c '
+  root=$1
+  shift
+  for file do
+    php -l "$root/$file" || exit 1
+  done
+' sh "$ROOT" < "$STAGED"; then
   echo "❌ Pre-commit: PHP syntax check failed."
   exit 1
 fi
