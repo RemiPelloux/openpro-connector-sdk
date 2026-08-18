@@ -1,10 +1,8 @@
 #!/usr/bin/env sh
 # ------------------------------------------------------------------
-# pre-push — openprosdk
-#
-# Runs TypeScript type-check before pushing.
+# pre-push — openprosdk (PHP connector library)
 # ------------------------------------------------------------------
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT" || exit 1
 
-pnpm exec tsc --noEmit || exit 1
+vendor/bin/phpunit || exit 1

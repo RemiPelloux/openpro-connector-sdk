@@ -8,6 +8,7 @@ use OpenPro\ConnectorSdk\Context\ConnectorContext;
 use OpenPro\ConnectorSdk\Manifest\Capability;
 use OpenPro\ConnectorSdk\Manifest\ConfigField;
 use OpenPro\ConnectorSdk\Manifest\ConnectorManifest;
+use OpenPro\ConnectorSdk\Offer\NormalizedOffer;
 use OpenPro\ConnectorSdk\Support\AbstractScraperConnector;
 
 /** @codeCoverageIgnore */
@@ -32,8 +33,20 @@ final class ExampleConnector extends AbstractScraperConnector
 
     public function fetchOffers(ConnectorContext $context): iterable
     {
-        $context->logger->info('Example connector fetch', ['installation' => $context->installationId]);
+        $endpoint = $context->configString('endpoint');
+        $context->logger->info('Example connector fetch', [
+            'installation' => $context->installationId,
+            'endpoint' => $endpoint,
+        ]);
 
-        return [];
+        yield NormalizedOffer::fromArray([
+            'external_id' => 'example-1',
+            'source_url' => rtrim($endpoint, '/').'/jobs/1',
+            'title' => 'Example role',
+            'content' => 'Replace this with a mapped ATS offer.',
+            'location' => 'Paris',
+            'contract_type' => 'CDI',
+            'currency' => 'EUR',
+        ]);
     }
 }
