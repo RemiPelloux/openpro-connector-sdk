@@ -5,6 +5,14 @@
 # Runs php -l on staged PHP files, then phpunit when PHP changed.
 # ------------------------------------------------------------------
 ROOT="$(git rev-parse --show-toplevel)"
+# Staged-file quality hooks from .pre-commit-config.yaml (hygiene, gitleaks, shellcheck, linters).
+if [ -f "$ROOT/.pre-commit-config.yaml" ]; then
+  if command -v pre-commit >/dev/null 2>&1; then
+    (cd "$ROOT" && pre-commit run --hook-stage pre-commit) || exit 1
+  else
+    echo "⚠ pre-commit not installed; skipping .pre-commit-config.yaml hooks (uv tool install pre-commit)" >&2
+  fi
+fi
 
 STAGED=$(mktemp)
 trap 'rm -f "$STAGED"' EXIT HUP INT TERM
